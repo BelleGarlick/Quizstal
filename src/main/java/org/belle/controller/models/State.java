@@ -10,11 +10,11 @@ import java.util.List;
 @Builder
 public class State {
 
-    public final String db;
-    public final ViewState view;
-    public final String wallpaper;
-    public final int question;
-    public final long timer;
-    public final List<User> users;
-    public final List<Question> questions;
+    public String db;
+    public ViewState view;
+    public String wallpaper;
+    public int question;
+    public long timer;
+    public List<User> users;
+    public List<Question> questions;
 }

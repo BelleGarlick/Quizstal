@@ -14,6 +14,9 @@ import {QuestionsView} from "./QuestionsView";
 //  add notes on questions to remind me how to present them
 
 // TODO Future Work
+//  Save messages send when sockets was closed
+//  Allow for storing questions in json files
+//  add password to admin page
 //  create a single db to hold all data which can be switched between
 //  rename questions, reorder questions, insert after current question.
 //  change status bar colour on iphone

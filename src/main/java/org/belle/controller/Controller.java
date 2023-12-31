@@ -20,12 +20,14 @@ public class Controller {
     private static Database connection;
 
     public static void connect(String db) throws Exception {
-        if (connection != null)
-            connection.close();
+        Database existingConnection = connection;
 
         connection = new Database(db);
         PlayerManager.setConnection(connection);
         QuestionManager.setConnection(connection);
+
+        if (existingConnection != null)
+            existingConnection.close();
     }
 
     public static void addBroadcastHandler(BroadcastCallback callback) {
@@ -35,6 +37,11 @@ public class Controller {
     private static void broadcastStateUpdates() throws Exception {
         String message = new ObjectMapper().writeValueAsString(getState());
         Controller.broadcastCallbacks.forEach(broadcastCallback -> broadcastCallback.send("state", message));
+    }
+
+    private static void playAudio(String file) throws Exception {
+        String message = "{\"file\": \"" + file + "\"}";
+        Controller.broadcastCallbacks.forEach(broadcastCallback -> broadcastCallback.send("playAudio", message));
     }
 
     public static State getState() throws Exception {
@@ -91,7 +98,7 @@ public class Controller {
     public static void setState(ViewState view, int questionId) throws Exception {
         if (view == ViewState.QUESTION) {
             for (User user: connection.getUsers())
-                Controller.submitAnswer(user.id, "");
+                Controller.submitAnswer(user.id, "", false);
 
             Optional<Question> matchedQuestion = connection.getQuestions().stream().filter(x -> x.id == questionId).findFirst();
             if (matchedQuestion.isPresent()) {
@@ -115,8 +122,13 @@ public class Controller {
         broadcastStateUpdates();
     }
 
-    public static void submitAnswer(String userId, String answer) throws Exception {
+    public static void submitAnswer(String userId, String answer, boolean playAudio) throws Exception {
+        User player = PlayerManager.getPlayer(userId);
+        if (player == null) return;
+
         PlayerManager.submitAnswer(userId, answer);
+        if (playAudio)
+            playAudio(player.buzzer);
         broadcastStateUpdates();
     }
 

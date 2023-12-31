@@ -19,6 +19,7 @@ public class PlayerManager {
     private static final AutoSaverTime autoSaver = new AutoSaverTime(PlayerManager::save);
 
     public static void setConnection(Database connection) throws SQLException {
+        PlayerManager.save();
         players.clear();
         PlayerManager.connection = connection;
         connection.getUsers().forEach(player -> players.put(player.id, player));
@@ -72,6 +73,10 @@ public class PlayerManager {
 
     public static List<User> list() {
         return new ArrayList<>(players.values());
+    }
+
+    public static User getPlayer(String userId) {
+        return players.get(userId);
     }
 
     private interface OnGetPlayerCallback {

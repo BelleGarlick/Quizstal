@@ -1,5 +1,5 @@
 import {newQuestion, removeQuestion, setScreenState, State} from "../../api";
-import {Button, Modal} from "@mui/material";
+import {Modal} from "@mui/material";
 import {useEffect, useState} from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTrash} from "@fortawesome/free-solid-svg-icons";
@@ -122,7 +122,10 @@ export function QuestionsView({state, addQuestionShown, setAddQuestionShown}: {s
                         }}>Answer</button>
                     </span>
 
-                    <button onClick={() => removeQuestion(question.id.toString())}>
+                    <button onClick={(e) => {
+                        removeQuestion(question.id.toString())
+                        e.stopPropagation()
+                    }}>
                         <FontAwesomeIcon icon={faTrash} />
                     </button>
                 </span>

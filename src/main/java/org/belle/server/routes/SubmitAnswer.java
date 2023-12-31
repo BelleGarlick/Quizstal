@@ -13,7 +13,8 @@ public class SubmitAnswer implements Handler {
     public void handle(@NotNull Context ctx) throws Exception {
         Controller.submitAnswer(
                 ctx.formParam("userId"),
-                ctx.formParam("answer")
+                ctx.formParam("answer"),
+                true
         );
         ctx.result("ok");
     }

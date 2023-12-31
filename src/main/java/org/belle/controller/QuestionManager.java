@@ -19,6 +19,7 @@ public class QuestionManager {
     private static final AutoSaverTime autoSaver = new AutoSaverTime(QuestionManager::save);
 
     public static void setConnection(Database connection) throws Exception {
+        QuestionManager.save();
         questions.clear();
         QuestionManager.connection = connection;
         connection.getQuestions().forEach(question -> questions.put(question.id, question));
@@ -37,6 +38,8 @@ public class QuestionManager {
                 .answer(answer)
                 .media(media)
                 .build());
+
+        System.out.println(QuestionManager.questions.keySet());
     }
 
     private static void save() {
@@ -56,5 +59,6 @@ public class QuestionManager {
 
     public static void remove(int id) {
         QuestionManager.questions.remove(id);
+        System.out.println(QuestionManager.questions.keySet());
     }
 }

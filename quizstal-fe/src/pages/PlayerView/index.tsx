@@ -1,7 +1,6 @@
 import {useEffect, useState} from "react";
 import {Question, QuestionType, State, submitAnswer, User, ViewState} from "../../api";
 import {StateLoader} from "../../api/state-loader";
-import {playAudio} from "../../api/server.ts";
 
 
 export function UserView() {
@@ -57,13 +56,6 @@ export function UserView() {
             style={{ display: (state.view == ViewState.QUESTION && !submitted) ? 'block' : 'none' }}
             onClick={() => {
                 setSubmitted(true)
-                try {
-                    if (question?.type == QuestionType.BUZZER) {
-                        if (user?.buzzer != undefined)
-                            playAudio(user.buzzer)
-                    }
-                } catch (e) {alert(e)}
-
                 submitAnswer(
                     user?.id ?? '',
                     question?.type == QuestionType.BUZZER

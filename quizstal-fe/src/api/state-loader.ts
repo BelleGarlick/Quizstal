@@ -35,7 +35,6 @@ export class StateLoader {
         this.websocket.onopen = () => {}
         this.websocket.onmessage = (event) => {
             const data = JSON.parse(event.data);
-            console.log(data)
 
             if (data.id == "state")
                 StateLoader.setState(data.data);
